@@ -1,0 +1,9 @@
+{
+    "app": {
+      "hosts": {
+        "appserver": {
+          "ansible_host": "${external_ip_address_app}"
+        }
+      }
+    }
+}

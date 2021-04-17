@@ -1,0 +1,27 @@
+version: '3.3'
+services:
+
+  mongo:
+    image: mongo:3.2
+    volumes:
+      - mongo:/data/db
+    networks:
+      - proxy
+
+  app:
+    container_name: {{lookup('env', 'CI_PROJECT_NAME')}}-{{lookup('env', 'CI_COMMIT_REF_SLUG')}}
+    image: {{lookup('env','CI_REGISTRY')}}/{{lookup('env','CI_PROJECT_NAME')}}:{{lookup('env','CI_COMMIT_REF_SLUG')}}
+    expose:
+      - "9292"
+    ports:
+      - "9292:9292"
+    networks:
+      - proxy
+    depends_on:
+      - mongo
+
+networks:
+  proxy:
+
+volumes:
+  mongo:

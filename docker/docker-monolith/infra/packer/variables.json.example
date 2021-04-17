@@ -1,0 +1,5 @@
+{
+    "service_account_key_file": "fake_key",
+    "folder_id": "live",
+    "source_image_family": "belarus"
+}

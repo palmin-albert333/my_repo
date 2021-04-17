@@ -1,0 +1,6 @@
+- src: jdauphant.nginx
+  version: v2.21.1
+
+- src: https://github.com/nluzgin/db-role-repo.git
+  version: master
+  name: db

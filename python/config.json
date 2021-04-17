@@ -1,0 +1,16 @@
+{
+  "receiver": "palmin.albert@yandex.ru",
+  "smtp": {
+    "smtp_user": "test.imsit@gmail.com",
+    "smtp_password": "12345678aabbcc",
+    "smtp_host": "smtp.gmail.com",
+    "smtp_port": 587
+  },
+  "database": {
+    "dbname": "test_db",
+    "host": "localhost",
+    "user": "root",
+    "password": "12345",
+    "port": 3306
+  }
+}

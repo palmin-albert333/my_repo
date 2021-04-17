@@ -1,0 +1,57 @@
+---
+- name: deploy
+  hosts: node
+  become: yes
+  tasks:
+    - name: apt update
+      apt:
+        update_cache: yes
+    - name: install git
+      apt:
+        name: git
+    - name: install mc
+      apt:
+        name: mc
+    - name: install zsh
+      apt:
+        name: zsh
+    - name: install wget
+      apt:
+        name: wget
+    - name: git clone
+      git:
+        repo: 'https://github.com/palmin-albert333/site.git'
+        dest: /var/www/example/
+        clone: yes
+    - name: ensure nginx is at the latest version
+      apt: name=nginx state=latest
+    - name: start nginx
+      service:
+          name: nginx
+          state: started
+    - name: copy the nginx config file
+      copy:
+        src: /home/albert/ansible/static_site.cfg
+        dest: /etc/nginx/sites-available/static_site.cfg
+      notify:
+        - restart nginx
+    - name: create symlink
+      file:
+        src: /etc/nginx/sites-available/static_site.cfg
+        dest: /etc/nginx/sites-enabled/default
+        state: link
+    - name: fs.file-max
+      sysctl:
+        name: fs.file-max
+        value: '1204000'
+        state: present
+        reload: yes
+    - name: net.core.somaxconn
+      sysctl:
+        name: net.core.somaxconn
+        value: '65535' 
+        state: present
+        reload: yes
+  handlers:
+    - name: restart nginx
+      service: name=nginx state=restarted

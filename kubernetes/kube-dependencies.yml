@@ -1,0 +1,61 @@
+- hosts: all
+  become: yes
+  tasks:
+   - name: swap off
+     shell: swapoff -a
+
+   - name: install Docker
+     apt:
+       name: docker.io
+       state: present
+       update_cache: true
+
+   - name: Upgrade all apt packages
+     apt: upgrade=dist force_apt_get=yes
+
+   - name: update apt
+     apt: update_cache=yes force_apt_get=yes cache_valid_time=360
+     
+   - name: install APT Transport HTTPS
+     apt:
+       name: apt-transport-https
+       state: present
+
+   - name: add Kubernetes apt-key
+     apt_key:
+       url: https://packages.cloud.google.com/apt/doc/apt-key.gpg
+       state: present
+
+   - name: add Kubernetes' APT repository
+     apt_repository:
+      repo: deb http://apt.kubernetes.io/ kubernetes-xenial main
+      state: present
+      filename: 'kubernetes'
+
+   - name: kubernetes-cni
+     apt:
+       name: kubernetes-cni=0.6.0-00
+       state: present
+       update_cache: true
+
+
+   - name: install kubelet
+     apt:
+       name: kubelet=1.13.4-00
+       state: present
+       update_cache: true
+
+   - name: install kubeadm
+     apt:
+       name: kubeadm=1.13.4-00
+       state: present
+
+- hosts: master
+  become: yes
+  tasks:
+   - name: install kubectl
+     apt:
+       name: kubectl=1.13.4-00
+       state: present
+       force: yes
+
