@@ -1,0 +1,36 @@
+---
+- name: Add an Apt signing key, will not download if present
+  apt_key:
+    keyserver: hkp://keyserver.ubuntu.com:80
+    id: D68FA50FEA312927
+  tags: install
+
+- name: Add MongoDB repo
+  apt_repository:
+    repo: deb http://repo.mongodb.org/apt/ubuntu xenial/mongodb-org/3.2 multiverse
+    state: present
+    filename: mongodb-org-3.2
+    update_cache: yes
+  tags: install
+
+- name: Apt Update && install mongo
+  apt:
+    name: mongodb-org
+    update_cache: yes
+  notify: restart mongod
+  tags: install
+
+- name: Enable service mongod and ensure it is not masked
+  systemd:
+    name: mongod
+    enabled: yes
+    masked: no
+  notify: restart mongod
+  tags: install
+
+- name: Make sure a service is running
+  systemd:
+    state: started
+    name: mongod
+  notify: restart mongod
+  tags: install

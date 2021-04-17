@@ -1,0 +1,6 @@
+---
+- name: Apt Update && install  ruby-full + ruby-bundler
+  apt:
+    name: ruby-full, ruby-bundler
+    update_cache: yes
+  tags: ruby

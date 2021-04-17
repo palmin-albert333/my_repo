@@ -1,0 +1,25 @@
+{
+    "builders": [
+        {
+            "type": "yandex",
+            "service_account_key_file": "{{ user `user_service_account_key_file` }}",
+            "folder_id": "{{ user `user_folder_id` }}",
+            "source_image_family": "{{ user `user_source_image_family` }}",
+            "image_name": "reddit-base-{{timestamp}}",
+            "image_family": "reddit-base",
+            "use_ipv4_nat": "true",
+            "ssh_username": "ubuntu",
+            "platform_id": "standard-v1",
+            "zone": "ru-central1-a",
+            "preemptible": "false"
+        }
+    ],
+    "provisioners": [
+        {
+            "type": "shell",
+            "script": "scripts/install_ruby.sh",
+            "execute_command": "sudo {{.Path}}",
+            "pause_before": "10s"
+        }
+    ]
+}

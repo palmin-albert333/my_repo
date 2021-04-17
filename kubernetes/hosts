@@ -1,0 +1,10 @@
+[masters]
+master ansible_host=130.193.38.82 ansible_user=appuser ansible_private_key_file=~/.ssh/appuser
+
+[workers]
+worker1 ansible_host=178.154.229.199 ansible_user=appuser ansible_private_key_file=~/.ssh/appuser
+worker2 ansible_host=178.154.247.187 ansible_user=appuser ansible_private_key_file=~/.ssh/appuser
+
+[all:vars]
+ansible_python_interpreter=/usr/bin/python3
+

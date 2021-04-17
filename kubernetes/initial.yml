@@ -1,0 +1,17 @@
+- hosts: all
+  become: yes
+  tasks:
+    - name: create the 'appuser' user
+      user: name=appuser append=yes state=present createhome=yes shell=/bin/bash
+
+    - name: allow 'appuser' to have passwordless sudo
+      lineinfile:
+        dest: /etc/sudoers
+        line: 'appuser ALL=(ALL) NOPASSWD: ALL'
+        validate: 'visudo -cf %s'
+
+    - name: set up authorized keys for the appuser user
+      authorized_key: user=appuser key="{{item}}"
+      with_file:
+        - ~/.ssh/appuser.pub
+
