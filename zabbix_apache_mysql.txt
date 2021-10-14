@@ -1,0 +1,7 @@
+#!/bin/bash
+wget https://repo.zabbix.com/zabbix/5.0/ubuntu/pool/main/z/zabbix-release/zabbix-release_5.0-1+bionic_all.deb && dpkg -i zabbix-release_5.0-1+bionic_all.deb && apt update && apt install -y zabbix-server-mysql zabbix-frontend-php zabbix-apache-conf zabbix-agent && apt install -y mariadb-server-10.1 mariadb-client-10.1
+mysql_secure_installation
+mysql -uroot -p'15426378' -e "create database zabbix character set utf8 collate utf8_bin;" && mysql -uroot -p'15426378' -e "grant all privileges on zabbix.* to zabbix@localhost identified by '15426378aa';" && mysql -uroot -p'15426378' zabbix -e "set global innodb_strict_mode='OFF';" && zcat /usr/share/doc/zabbix-server-mysql*/create.sql.gz | mysql -uzabbix -p'15426378aa' zabbix && mysql -uroot -p'15426378' zabbix -e "set global innodb_strict_mode='ON';"
+nano /etc/zabbix/zabbix_server.conf
+nano /etc/zabbix/apache.conf
+systemctl restart zabbix-server zabbix-agent && systemctl enable zabbix-server zabbix-agent && systemctl restart apache2 && systemctl enable apache2
